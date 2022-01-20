@@ -1,10 +1,12 @@
+USE employees_db;
+
 INSERT INTO department (id, name)
 VALUES (100, "Sales"),
        (110, "Engineering"),
        (120, "Finance"),
        (130, "Legal");
 
-INSERT INTO role (id, title, salary, deparment_id)
+INSERT INTO role (id, title, salary, department_id)
 VALUES (1, "Sales Lead", 65000, 100),
        (2, "Sales Person", 50000, 100),
        (3, "Lead Engineer", 75000, 110),

@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const consoleTable = require('console.table');
 require('dotenv').config();
-// const PORT = 3001;
+const PORT = 3001;
 const db = require('./lib/sql_db');
 
 // Modules
@@ -15,28 +15,8 @@ const viewDepartments = require('./lib/viewDepartments');
 const addDepartment = require('./lib/addDepartment');
 // end of modules
 
-
-
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASS,
-//     database: process.env.DB_DATABASE
-// })
-
-
-
 db.connect(function (err) {
     if (err) throw err;
-    console.log(`
-    ╔═══╗─────╔╗──────────────╔═╗╔═╗
-    ║╔══╝─────║║──────────────║║╚╝║║
-    ║╚══╦╗╔╦══╣║╔══╦╗─╔╦══╦══╗║╔╗╔╗╠══╦═╗╔══╦══╦══╦═╗
-    ║╔══╣╚╝║╔╗║║║╔╗║║─║║║═╣║═╣║║║║║║╔╗║╔╗╣╔╗║╔╗║║═╣╔╝
-    ║╚══╣║║║╚╝║╚╣╚╝║╚═╝║║═╣║═╣║║║║║║╔╗║║║║╔╗║╚╝║║═╣║
-    ╚═══╩╩╩╣╔═╩═╩══╩═╗╔╩══╩══╝╚╝╚╝╚╩╝╚╩╝╚╩╝╚╩═╗╠══╩╝
-    ───────║║──────╔═╝║─────────────────────╔═╝║
-    ───────╚╝──────╚══╝─────────────────────╚══╝`);
     firstPrompt();
 });
 
@@ -57,38 +37,38 @@ function firstPrompt() {
             "Quit"
         ]
     })
-    .then(function(task) {
-        switch (task.firstPrompt) {
+    .then(function(response) {
+        switch (response.task) {
             case "View All Employees":
-                viewEmployees();
+                viewEmployees(db, firstPrompt);
                 break;
             
             case "Add Employee":
-                addEmployee();
+                addEmployee(db, firstPrompt, viewEmployees);
                 break;
 
             case "Update Employee Role":
-                updateEmployeeRole();
+                updateEmployeeRole(db, firstPrompt, viewEmployees);
                 break;
 
             case "View All Roles":
-                viewRoles();
+                viewRoles(db, firstPrompt);
                 break;
 
             case "Add Role":
-                addRole();
+                addRole(db, firstPrompt, viewRoles);
                 break;
 
             case "View All Departments":
-                viewDepartments();
+                viewDepartments(db, firstPrompt);
                 break;
 
             case "Add Department":
-                addDepartment();
+                addDepartment(db, firstPrompt, viewDepartments);
                 break;
 
             case "Quit":
-                connection.end();
+                db.end();
                 break;
 
             default:
@@ -98,6 +78,7 @@ function firstPrompt() {
 
 }
 
+// module.exports = firstPrompt;
 
 
 
